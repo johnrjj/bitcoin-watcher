@@ -11,19 +11,6 @@ const getBitcoinPriceData = async (pair = 'btc-usd') => {
   return bitcoinPriceData;
 }
 
-const pairMetadata = {
-  base: {
-    label: 'BTC',
-    name: 'Bitcoin',
-    decimals: 8,
-  },
-  quote: {
-    label: 'USD',
-    name: 'Dollar',
-    decimals: 2,
-  }
-};
-
 const AppContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -215,7 +202,7 @@ class App extends Component {
 const calculateQuoteFromBase = (quotePrice, baseQuantity, decimals = 2) => {
   if (!quotePrice) return ''
   if (!baseQuantity || baseQuantity == '') return '';
-  return (new BigNumber(quotePrice).multipliedBy(new BigNumber(baseQuantity))).toFormat(decimals);
+  return (new BigNumber(+quotePrice).multipliedBy(new BigNumber(+baseQuantity))).toFormat(decimals);
 
   // return new BigNumber(new String(+quotePrice * +baseQuantity)).toFixed(decimals);
 }
@@ -223,8 +210,22 @@ const calculateQuoteFromBase = (quotePrice, baseQuantity, decimals = 2) => {
 const calculateBaseFromQuote = (quotePrice, quoteQuantity, decimals = 8) => {
   if (!quotePrice) return '';
   if (!quoteQuantity || quoteQuantity == '') return '';
-  return new BigNumber(new BigNumber(quoteQuantity).dividedBy(new BigNumber(quotePrice))).toFormat(decimals);
+  return new BigNumber(new BigNumber(+quoteQuantity).dividedBy(new BigNumber(+quotePrice))).toFormat(decimals);
 }
+
+const pairMetadata = {
+  baseCurrency: {
+    name: 'Bitcoin',
+    ticker: 'BTC',
+    decimals: 8,
+  },
+  quoteCurrency: {
+    name: 'Dollar',
+    ticker: 'USD',
+    decimals: 2,
+  },
+};
+
 
 
 export default App;
